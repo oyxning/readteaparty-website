@@ -190,7 +190,8 @@ const translations = {
             'your-name': '你的名字',
             'your-email': '你的邮箱',
             'your-message': '你的消息',
-            'send-btn': '发送'
+            'send-btn': '发送',
+            'join-group-link': '进群方式'
         },
         'en': {
             'contact-title': 'Join Us',
@@ -203,7 +204,32 @@ const translations = {
             'your-name': 'Your Name',
             'your-email': 'Your Email',
             'your-message': 'Your Message',
-            'send-btn': 'Send'
+            'send-btn': 'Send',
+            'join-group-link': 'Join Group'
+        }
+    },
+    'join-group.html': {
+        'zh': {
+            'join-group-title': '进群方式',
+            'group-number-title': 'QQ群号',
+            'group-number': '2164040300',
+            'copy-btn': '复制群号',
+            'verification-title': '验证代码',
+            'verification-desc': '请复制下方的10位随机数作为验证代码，进群时提供给管理员验证非机器人身份。',
+            'copy-code-btn': '复制代码',
+            'last-update': '上一次更新:',
+            'next-update': '下一次更新:'
+        },
+        'en': {
+            'join-group-title': 'Join Group',
+            'group-number-title': 'QQ Group Number',
+            'group-number': '2164040300',
+            'copy-btn': 'Copy Group Number',
+            'verification-title': 'Verification Code',
+            'verification-desc': 'Please copy the 10-digit random number below as the verification code and provide it to the administrator when joining the group to verify that you are not a robot.',
+            'copy-code-btn': 'Copy Code',
+            'last-update': 'Last update:',
+            'next-update': 'Next update:'
         }
     },
     'common': {
@@ -326,15 +352,12 @@ function addI18nAttributes() {
     } else if (currentPage === 'contact.html') {
         document.querySelector('.contact .section-title').setAttribute('data-i18n', 'contact-title');
         document.querySelector('.contact-info h3').setAttribute('data-i18n', 'contact-info');
-        document.querySelectorAll('.contact-item span')[0].setAttribute('data-i18n', 'qq-group');
-        document.querySelectorAll('.contact-item span')[1].setAttribute('data-i18n', 'server-ip');
-        document.querySelectorAll('.contact-item span')[2].setAttribute('data-i18n', 'server-version');
-        document.querySelectorAll('.contact-item span')[3].setAttribute('data-i18n', 'donation');
-        document.querySelector('.contact-form h3').setAttribute('data-i18n', 'send-message');
-        document.querySelectorAll('.contact-form input')[0].setAttribute('placeholder', translations['contact.html'][savedLang]['your-name']);
-        document.querySelectorAll('.contact-form input')[1].setAttribute('placeholder', translations['contact.html'][savedLang]['your-email']);
-        document.querySelector('.contact-form textarea').setAttribute('placeholder', translations['contact.html'][savedLang]['your-message']);
-        document.querySelector('.contact-form button').setAttribute('data-i18n', 'send-btn');
+        document.querySelectorAll('.contact-item span')[0].setAttribute('data-i18n', 'server-ip');
+        document.querySelectorAll('.contact-item span')[1].setAttribute('data-i18n', 'server-version');
+        document.querySelectorAll('.contact-item span')[2].setAttribute('data-i18n', 'donation');
+        document.querySelector('.join-group-entry-right h3').setAttribute('data-i18n', 'join-group-title');
+        document.querySelector('.join-group-entry-right p').setAttribute('data-i18n', 'join-group-desc');
+        document.querySelector('.join-group-link').setAttribute('data-i18n', 'join-group-link');
     }
 }
 

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进群方式 - 红茶会MC服务器</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">红茶会MC</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="about.html">关于我们</a></li>
+                    <li><a href="features.html">服务器特色</a></li>
+                    <li><a href="rules.html">服务器规则</a></li>
+                    <li><a href="contact.html">联系我们</a></li>
+                    <li><a href="join-group.html" class="active">进群方式</a></li>
+                </ul>
+            </nav>
+            <div class="settings">
+                <button id="theme-toggle" class="theme-toggle-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="language-switch">
+                    <button class="lang-btn active" data-lang="zh">中文</button>
+                    <button class="lang-btn" data-lang="en">English</button>
+                </div>
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="join-group">
+        <div class="container">
+            <h2 class="section-title" data-i18n="join-group-title">进群方式</h2>
+            <div class="group-info">
+                <div class="group-number">
+                    <h3 data-i18n="group-number-title">QQ群号</h3>
+                    <p class="number" data-i18n="group-number">2164040300</p>
+                    <button class="copy-btn" id="copy-group-number" data-i18n="copy-btn">复制群号</button>
+                </div>
+                
+                <div class="verification-code">
+                    <h3 data-i18n="verification-title">验证代码</h3>
+                    <p data-i18n="verification-desc">请复制下方的10位随机数作为验证代码，进群时提供给管理员验证非机器人身份。</p>
+                    <div class="code-container">
+                        <p id="random-code" class="code-display" style="font-family: monospace; font-size: 18px; letter-spacing: 2px;">生成中...</p>
+                    </div>
+                    <div class="update-info">
+                        <p data-i18n="last-update">上一次更新: <span id="last-update-time"></span></p>
+                        <p data-i18n="next-update">下一次更新: <span id="next-update-time"></span> (剩余 <span id="countdown">60</span> 秒)</p>
+                    </div>
+                    <style>
+                        .update-info {
+                            margin-top: 15px;
+                            font-size: 14px;
+                            color: #666;
+                        }
+                        .code-display {
+                            font-weight: bold;
+                            color: #333;
+                        }
+                    </style>
+                    <button class="copy-btn" id="copy-code" data-i18n="copy-code-btn">复制代码</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p class="copyright" data-i18n="copyright">© 2016 红茶会MC服务器. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // 存储当前随机数，供外部插件访问
+        window.currentVerificationCode = {"code": ""};
+        let countdownInterval;
+        let secondsRemaining = 60;
+
+        // 生成10位数随机数
+        function generateRandomCode() {
+            let code = '';
+            for (let i = 0; i < 10; i++) {
+                code += Math.floor(Math.random() * 10);
+            }
+            return code;
+        }
+
+        // 更新随机数并以明文显示
+        function updateRandomCode() {
+            const code = generateRandomCode();
+            // 更新全局变量，供插件访问
+            window.currentVerificationCode = {"code": code};
+            const codeElement = document.getElementById('random-code');
+            codeElement.textContent = code;
+            console.log('随机数已更新:', window.currentVerificationCode);
+
+            // 更新上次更新时间
+            const now = new Date();
+            document.getElementById('last-update-time').textContent = now.toLocaleString();
+
+            // 计算下次更新时间
+            const nextUpdate = new Date(now.getTime() + 60000);
+            document.getElementById('next-update-time').textContent = nextUpdate.toLocaleString();
+
+            // 重置倒计时
+            secondsRemaining = 60;
+            updateCountdown();
+        }
+
+        // 更新倒计时
+        function updateCountdown() {
+            document.getElementById('countdown').textContent = secondsRemaining;
+            secondsRemaining--;
+
+            if (secondsRemaining < 0) {
+                secondsRemaining = 60;
+            }
+        }
+
+        // 复制群号
+        document.getElementById('copy-group-number').addEventListener('click', function() {
+            const groupNumber = document.querySelector('.number').textContent;
+            navigator.clipboard.writeText(groupNumber).then(function() {
+                alert('群号已复制到剪贴板！');
+            }).catch(function() {
+                alert('复制失败，请手动复制。');
+            });
+        });
+
+        // 复制代码
+        document.getElementById('copy-code').addEventListener('click', function() {
+            const codeText = document.getElementById('random-code').textContent;
+            navigator.clipboard.writeText(codeText).then(function() {
+                alert('验证代码已复制到剪贴板！');
+            }).catch(function() {
+                alert('复制失败，请手动复制。');
+            });
+        });
+
+        // 页面加载时生成随机数
+        document.addEventListener('DOMContentLoaded', function() {
+            updateRandomCode();
+
+            // 设置每分钟(60000毫秒)自动更新随机数
+            setInterval(updateRandomCode, 60000);
+            console.log('已启动每分钟自动更新随机数');
+
+            // 设置每秒更新倒计时
+            countdownInterval = setInterval(updateCountdown, 1000);
+
+            // 添加i18n属性
+            document.querySelector('.join-group .section-title').setAttribute('data-i18n', 'join-group-title');
+            document.querySelector('.group-number h3').setAttribute('data-i18n', 'group-number-title');
+            document.querySelector('.group-number .number').setAttribute('data-i18n', 'group-number');
+            document.getElementById('copy-group-number').setAttribute('data-i18n', 'copy-btn');
+            document.querySelector('.verification-code h3').setAttribute('data-i18n', 'verification-title');
+            document.querySelector('.verification-code p').setAttribute('data-i18n', 'verification-desc');
+            document.getElementById('copy-code').setAttribute('data-i18n', 'copy-code-btn');
+            document.querySelector('.update-info p:nth-child(1)').setAttribute('data-i18n', 'last-update');
+            document.querySelector('.update-info p:nth-child(2)').setAttribute('data-i18n', 'next-update');
+        });
+
+        // 添加简单的API端点，供外部插件获取随机数
+        function getCurrentVerificationCode() {
+            return window.currentVerificationCode;
+        }
+    </script>
+</body>
+</html>

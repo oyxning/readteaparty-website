@@ -43,40 +43,36 @@
     <!-- 联系方式 -->
     <section class="contact" id="contact" style="padding: 100px 0; margin-top: 70px;">
         <div class="container">
-            <h2 class="section-title">加入我们</h2>
+            <!-- 进群方式入口 -->
+            <h2 class="section-title" data-i18n="contact-title">加入我们</h2>
             <div class="contact-content">
                 <div class="contact-info">
-                    <h3>联系信息</h3>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>QQ群: 170912922</span>
-                    </div>
+                    <h3 data-i18n="contact-info">联系信息</h3>
+
+<!-- 移除群号信息 -->
                     <div class="contact-item">
                         <i class="fas fa-info-circle"></i>
-                        <span>进群看服务器IP（记得改群昵称）</span>
+                        <span data-i18n="server-ip">进群看服务器IP（记得改群昵称）</span>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-server"></i>
-                        <span>服务器版本: 1.21.4</span>
+                        <span data-i18n="server-version">服务器版本: 1.21.4</span>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-dollar-sign"></i>
-                        <span>公益且不接受赞助</span>
+                        <span data-i18n="donation">公益且不接受赞助</span>
                     </div>
+
                     <div class="social-links">
                         <a href="#"><i class="fab fa-qq"></i></a>
                         <a href="#"><i class="fab fa-bilibili"></i></a>
                         <a href="#"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
-                <div class="contact-form">
-                    <h3>发送消息</h3>
-                    <form>
-                        <input type="text" placeholder="你的名字" required>
-                        <input type="email" placeholder="你的邮箱" required>
-                        <textarea placeholder="你的消息" rows="5" required></textarea>
-                        <button type="submit" class="btn">发送</button>
-                    </form>
+                <div class="join-group-entry-right">
+                    <h3 data-i18n="join-group-title">进群方式</h3>
+                    <p data-i18n="join-group-desc">加入我们的QQ群，一起交流游戏经验</p>
+                    <a href="join-group.html" class="join-group-link btn" data-i18n="join-group-link">立即加入</a>
                 </div>
             </div>
         </div>
