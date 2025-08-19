@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>红茶会MC服务器 - 服务器新闻</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="custom.css">
+    <!-- 引入Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .news-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .news-sidebar {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            background-color: #1e293b;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .news-content {
+            flex: 3;
+            min-width: 300px;
+            background-color: #1e293b;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-height: 80vh;
+        }
+        .news-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .news-item:hover {
+            background-color: #334155;
+        }
+        .news-item.active {
+            background-color: #475569;
+        }
+        .news-item h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #f8fafc;
+        }
+        .news-item p {
+            margin: 5px 0 0 0;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+        .news-content h2 {
+            margin-top: 0;
+            color: #f8fafc;
+        }
+        .news-content .news-meta {
+            color: #94a3b8;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .news-content .news-body {
+            color: #f1f5f9;
+            line-height: 1.6;
+        }
+        .news-content .news-body h1 {
+            font-size: 24px;
+            margin-top: 0;
+        }
+        .news-content .news-body h2 {
+            font-size: 20px;
+        }
+        .news-content .news-body p {
+            margin-bottom: 15px;
+        }
+        .news-content .news-body a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        .news-content .news-body a:hover {
+            text-decoration: underline;
+        }
+        .no-news {
+            text-align: center;
+            padding: 50px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-cup-tea"></i>
+                    <span>红茶会MC</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="about.html">关于我们</a></li>
+                    <li><a href="news.html">服务器新闻</a></li>
+                    <li><a href="server_features.html">功能列表</a></li>
+                    <li><a href="contact.html">加入我们</a></li>
+                </ul>
+                <div class="settings">
+                    <button id="theme-toggle" class="theme-toggle-btn">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="language-switch">
+                        <button class="lang-btn" data-lang="zh">中文</button>
+                        <button class="lang-btn" data-lang="en">English</button>
+                    </div>
+                </div>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 服务器新闻 -->
+    <section class="news" id="news" style="padding: 100px 0; margin-top: 70px;">
+        <div class="container">
+            <h2 class="section-title">服务器新闻</h2>
+            <div class="news-container">
+                <div class="news-sidebar" id="news-sidebar">
+                    <!-- 新闻标题列表将通过JavaScript动态加载 -->
+                    <div class="loading">加载中...</div>
+                </div>
+                <div class="news-content" id="news-content">
+                    <div class="no-news">
+                        <i class="fas fa-newspaper fa-4x"></i>
+                        <p>请从左侧选择一篇新闻</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-cup-tea"></i> 红茶会MC
+                </div>
+                <ul class="footer-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="about.html">关于我们</a></li>
+                    <li><a href="news.html">服务器新闻</a></li>
+                    <li><a href="server_features.html">功能列表</a></li>
+                    <li><a href="contact.html">加入我们</a></li>
+                </ul>
+                <p class="copyright">© 2016 红茶会MC服务器. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // 加载新闻列表
+        async function loadNewsList() {
+            const sidebar = document.getElementById('news-sidebar');
+            sidebar.innerHTML = '<div class="loading">加载中...</div>';
+
+            try {
+                // 获取news目录下的所有md文件
+                // 注意：由于浏览器安全限制，无法直接读取本地文件系统
+                // 这里我们假设有一个API来获取文件列表
+                // 实际应用中，您需要一个后端服务来提供这些数据
+                const response = await fetch('api/news');
+                if (!response.ok) {
+                    throw new Error('网络响应异常');
+                }
+                const newsFiles = await response.json();
+
+                // 按照文件日期排序（假设newsFiles包含date属性）
+                newsFiles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                // 生成新闻列表
+                sidebar.innerHTML = '';
+                newsFiles.forEach((file, index) => {
+                    const newsItem = document.createElement('div');
+                    newsItem.className = 'news-item' + (index === 0 ? ' active' : '');
+                    newsItem.dataset.file = file.name;
+
+                    const title = document.createElement('h3');
+                    title.textContent = file.title || file.name.replace('.md', '');
+
+                    const date = document.createElement('p');
+                    date.textContent = new Date(file.date).toLocaleDateString();
+
+                    newsItem.appendChild(title);
+                    newsItem.appendChild(date);
+                    sidebar.appendChild(newsItem);
+
+                    // 添加点击事件
+                    newsItem.addEventListener('click', () => {
+                        // 移除其他项的active类
+                        document.querySelectorAll('.news-item').forEach(item => {
+                            item.classList.remove('active');
+                        });
+                        // 添加active类
+                        newsItem.classList.add('active');
+                        // 加载新闻内容
+                        loadNewsContent(file.name);
+                    });
+                });
+
+                // 默认加载第一篇新闻
+                if (newsFiles.length > 0) {
+                    loadNewsContent(newsFiles[0].name);
+                } else {
+                    sidebar.innerHTML = '<div class="no-news">暂无新闻</div>';
+                }
+            } catch (error) {
+                console.error('加载新闻列表失败:', error);
+                sidebar.innerHTML = '<div class="no-news">加载失败</div>';
+            }
+        }
+
+        // 加载新闻内容
+        async function loadNewsContent(filename) {
+            const content = document.getElementById('news-content');
+            content.innerHTML = '<div class="loading">加载中...</div>';
+
+            try {
+                // 获取新闻文件内容
+                // 注意：由于浏览器安全限制，无法直接读取本地文件系统
+                // 这里我们假设有一个API来获取文件内容
+                // 实际应用中，您需要一个后端服务来提供这些数据
+                const response = await fetch(`api/news/${filename}`);
+                if (!response.ok) {
+                    throw new Error('网络响应异常');
+                }
+                const newsData = await response.json();
+
+                // 生成新闻内容
+                content.innerHTML = '';
+
+                const title = document.createElement('h2');
+                title.textContent = newsData.title || filename.replace('.md', '');
+
+                const meta = document.createElement('div');
+                meta.className = 'news-meta';
+                meta.textContent = `发布日期: ${new Date(newsData.date).toLocaleDateString()}`;
+
+                const body = document.createElement('div');
+                body.className = 'news-body';
+                body.innerHTML = newsData.content;
+
+                content.appendChild(title);
+                content.appendChild(meta);
+                content.appendChild(body);
+            } catch (error) {
+                console.error('加载新闻内容失败:', error);
+                content.innerHTML = '<div class="no-news">加载失败</div>';
+            }
+        }
+
+        // 页面加载完成后加载新闻列表
+        document.addEventListener('DOMContentLoaded', loadNewsList);
+    </script>
+</body>
+</html>

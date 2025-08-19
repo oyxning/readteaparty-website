@@ -1,0 +1,34 @@
+{
+    "features": [
+        {
+            "id": 1,
+            "name": "生存模式",
+            "description": "经典的 Minecraft 生存体验，采集资源、建造家园、对抗怪物。",
+            "icon": "fa-hammer"
+        },
+        {
+            "id": 2,
+            "name": "创造模式",
+            "description": "无限资源，自由建造，发挥你的创造力。",
+            "icon": "fa-paint-brush"
+        },
+        {
+            "id": 3,
+            "name": "多人游戏",
+            "description": "与朋友一起游戏，共同建造，互相帮助。",
+            "icon": "fa-users"
+        },
+        {
+            "id": 4,
+            "name": "自定义地图",
+            "description": "探索我们精心设计的自定义地图。",
+            "icon": "fa-map"
+        },
+        {
+            "id": 5,
+            "name": "经济系统",
+            "description": "服务器内的经济系统，交易物品，积累财富。",
+            "icon": "fa-coins"
+        }
+    ]
+}

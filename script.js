@@ -134,7 +134,9 @@ const translations = {
             'feature-5-title': '服务器架构',
             'feature-5-desc': 'Velocity群组架构，分主服、建筑服、监狱（关熊孩子），偶尔玩腻也会有短暂的限定MOD服体验~~都在一个群组下，跨服聊天！！',
             'feature-6-title': '安全措施',
-            'feature-6-desc': '该有的保护措施都有！圈地、每日备份、COI、背包滚回、箱子锁等，让您的游戏体验更加安全和愉快。'
+            'feature-6-desc': '该有的保护措施都有！圈地、每日备份、COI、背包滚回、箱子锁等，让您的游戏体验更加安全和愉快。',
+            'feature-7-title': '服务器卫星图',
+            'feature-7-desc': '<a href="http://110.42.32.31:8452/?world=world&renderer=vintage_story&zoom=0&x=0&z=0" target="_blank">点击查看服务器卫星图</a>'
         },
         'en': {
             'features-title': 'Server Features',
@@ -149,7 +151,9 @@ const translations = {
             'feature-5-title': 'Server Architecture',
             'feature-5-desc': 'Velocity group architecture, including main server, building server, prison (for griefers), and occasionally has short-term limited MOD server experience~~ All under one group, cross-server chat!!',
             'feature-6-title': 'Security Measures',
-            'feature-6-desc': 'All necessary protection measures are in place! Land claiming, daily backups, COI, backpack rollback, chest locking, etc., to make your gaming experience safer and more enjoyable.'
+            'feature-6-desc': 'All necessary protection measures are in place! Land claiming, daily backups, COI, backpack rollback, chest locking, etc., to make your gaming experience safer and more enjoyable.',
+            'feature-7-title': 'Server Map',
+            'feature-7-desc': '<a href="http://110.42.32.31:8452/?world=world&renderer=vintage_story&zoom=0&x=0&z=0" target="_blank">View Server Map</a>'
         }
     },
     'rules.html': {
@@ -184,43 +188,69 @@ const translations = {
             'contact-info': '联系信息',
             'qq-group': 'QQ群: 170912922',
             'server-ip': '进群看服务器IP（记得改群昵称）',
-            'server-version': '服务器版本: 1.21.4',
+            'server-version': '服务器版本: 1.21.7',
             'donation': '公益且不接受赞助',
             'send-message': '发送消息',
             'your-name': '你的名字',
             'your-email': '你的邮箱',
             'your-message': '你的消息',
-            'send-btn': '发送'
+            'send-btn': '发送',
+            'join-group-link': '进群方式'
         },
         'en': {
             'contact-title': 'Join Us',
             'contact-info': 'Contact Information',
             'qq-group': 'QQ Group: 170912922',
             'server-ip': 'Join the group to get server IP (remember to change your group nickname)',
-            'server-version': 'Server Version: 1.21.4',
+            'server-version': 'Server Version: 1.21.7',
             'donation': 'Non-profit and no sponsorship accepted',
             'send-message': 'Send Message',
             'your-name': 'Your Name',
             'your-email': 'Your Email',
             'your-message': 'Your Message',
-            'send-btn': 'Send'
+            'send-btn': 'Send',
+            'join-group-link': 'Join Group'
+        }
+    },
+    'join-group.html': {
+        'zh': {
+            'join-group-title': '进群方式',
+            'group-number-title': 'QQ群号',
+            'group-number': '2164040300',
+            'copy-btn': '复制群号',
+            'verification-title': '验证代码',
+            'verification-desc': '请复制下方的10位随机数作为验证代码，进群时提供给管理员验证非机器人身份。',
+            'copy-code-btn': '复制代码',
+            'last-update': '上一次更新:',
+            'next-update': '下一次更新:'
+        },
+        'en': {
+            'join-group-title': 'Join Group',
+            'group-number-title': 'QQ Group Number',
+            'group-number': '2164040300',
+            'copy-btn': 'Copy Group Number',
+            'verification-title': 'Verification Code',
+            'verification-desc': 'Please copy the 10-digit random number below as the verification code and provide it to the administrator when joining the group to verify that you are not a robot.',
+            'copy-code-btn': 'Copy Code',
+            'last-update': 'Last update:',
+            'next-update': 'Next update:'
         }
     },
     'common': {
         'zh': {
             'home': '首页',
             'about': '关于我们',
-            'features': '服务器特色',
-            'rules': '服务器规则',
-            'contact': '联系我们',
+            'features': '服务器新闻',
+            'rules': '功能列表',
+            'contact': '加入我们',
             'copyright': '© 2016 红茶会MC服务器. 保留所有权利.'
         },
         'en': {
             'home': 'Home',
             'about': 'About Us',
-            'features': 'Server Features',
-            'rules': 'Server Rules',
-            'contact': 'Contact Us',
+            'features': 'Server News',
+            'rules': 'Features List',
+            'contact': 'Join Us',
             'copyright': '© 2016 Red Tea Party MC Server. All rights reserved.'
         }
     }
@@ -241,11 +271,17 @@ langButtons.forEach(btn => {
 // 更新页面内容函数
 function updatePageContent(lang) {
     // 更新公共部分
-    document.querySelectorAll('.nav-links a')[0].textContent = translations['common'][lang]['home'];
-    document.querySelectorAll('.nav-links a')[1].textContent = translations['common'][lang]['about'];
-    document.querySelectorAll('.nav-links a')[2].textContent = translations['common'][lang]['features'];
-    document.querySelectorAll('.nav-links a')[3].textContent = translations['common'][lang]['rules'];
-    document.querySelectorAll('.nav-links a')[4].textContent = translations['common'][lang]['contact'];
+    const navLinks = document.querySelectorAll('.nav-links a');
+    navLinks[0].textContent = translations['common'][lang]['home'];
+    navLinks[0].href = 'index.html';
+    navLinks[1].textContent = translations['common'][lang]['about'];
+    navLinks[1].href = 'about.html';
+    navLinks[2].textContent = translations['common'][lang]['features'];
+    navLinks[2].href = 'news.html';
+    navLinks[3].textContent = translations['common'][lang]['rules'];
+    navLinks[3].href = 'server_features.html';
+    navLinks[4].textContent = translations['common'][lang]['contact'];
+    navLinks[4].href = 'contact.html';
     document.querySelector('.copyright').textContent = translations['common'][lang]['copyright'];
 
     // 更新页面特定内容
@@ -324,17 +360,17 @@ function addI18nAttributes() {
         document.querySelectorAll('.rules-list li')[7].setAttribute('data-i18n', 'rule-8');
         document.querySelectorAll('.rules-list li')[8].setAttribute('data-i18n', 'rule-9');
     } else if (currentPage === 'contact.html') {
-        document.querySelector('.contact .section-title').setAttribute('data-i18n', 'contact-title');
-        document.querySelector('.contact-info h3').setAttribute('data-i18n', 'contact-info');
-        document.querySelectorAll('.contact-item span')[0].setAttribute('data-i18n', 'qq-group');
-        document.querySelectorAll('.contact-item span')[1].setAttribute('data-i18n', 'server-ip');
-        document.querySelectorAll('.contact-item span')[2].setAttribute('data-i18n', 'server-version');
-        document.querySelectorAll('.contact-item span')[3].setAttribute('data-i18n', 'donation');
-        document.querySelector('.contact-form h3').setAttribute('data-i18n', 'send-message');
-        document.querySelectorAll('.contact-form input')[0].setAttribute('placeholder', translations['contact.html'][savedLang]['your-name']);
-        document.querySelectorAll('.contact-form input')[1].setAttribute('placeholder', translations['contact.html'][savedLang]['your-email']);
-        document.querySelector('.contact-form textarea').setAttribute('placeholder', translations['contact.html'][savedLang]['your-message']);
-        document.querySelector('.contact-form button').setAttribute('data-i18n', 'send-btn');
+        const sectionTitle = document.querySelector('.contact .section-title');
+        if (sectionTitle) sectionTitle.setAttribute('data-i18n', 'contact-title');
+        
+        const contactInfo = document.querySelector('.contact-info h3');
+        if (contactInfo) contactInfo.setAttribute('data-i18n', 'contact-info');
+        
+        const contactItems = document.querySelectorAll('.contact-item span');
+        if (contactItems.length > 0) contactItems[0].setAttribute('data-i18n', 'server-ip');
+        if (contactItems.length > 1) contactItems[1].setAttribute('data-i18n', 'server-version');
+        if (contactItems.length > 2) contactItems[2].setAttribute('data-i18n', 'donation');
+        // 移除了进群方式相关元素，所以不再设置这些属性
     }
 }
 
