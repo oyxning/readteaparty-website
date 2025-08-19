@@ -127,6 +127,12 @@
         </div>
     </header>
 
+    <!-- 管理员提示 -->
+    <div class="admin-notice" style="background-color: #fbbf24; color: #1f2937; padding: 10px 20px; text-align: center; font-weight: bold;">
+        管理员提示: 本地开发环境下，添加新新闻后请运行 <code>python generate_news_json.py</code> 更新新闻列表。
+        GitHub Pages环境下，推送更改后会自动更新。
+    </div>
+
     <!-- 服务器新闻 -->
     <section class="news" id="news" style="padding: 100px 0; margin-top: 70px;">
         <div class="container">
@@ -167,23 +173,29 @@
 
     <script src="script.js"></script>
     <script>
+        // 自动发现news目录下的所有md文件
+        async function discoverNewsFiles() {
+            // 由于浏览器安全限制，无法直接读取服务器目录
+            // 我们使用一个约定：所有新闻文件都列在news.json中
+            // 这个文件可以通过服务器端脚本自动生成
+            const response = await fetch('json/news.json');
+            if (!response.ok) {
+                throw new Error('无法加载新闻列表');
+            }
+            const data = await response.json();
+            return data.news;
+        }
+
         // 加载新闻列表
         async function loadNewsList() {
             const sidebar = document.getElementById('news-sidebar');
             sidebar.innerHTML = '<div class="loading">加载中...</div>';
 
             try {
-                // 获取news目录下的所有md文件
-                // 注意：由于浏览器安全限制，无法直接读取本地文件系统
-                // 这里我们假设有一个API来获取文件列表
-                // 实际应用中，您需要一个后端服务来提供这些数据
-                const response = await fetch('api/news');
-                if (!response.ok) {
-                    throw new Error('网络响应异常');
-                }
-                const newsFiles = await response.json();
+                // 获取新闻文件列表
+                const newsFiles = await discoverNewsFiles();
 
-                // 按照文件日期排序（假设newsFiles包含date属性）
+                // 按照文件日期排序
                 newsFiles.sort((a, b) => new Date(b.date) - new Date(a.date));
 
                 // 生成新闻列表
@@ -191,10 +203,10 @@
                 newsFiles.forEach((file, index) => {
                     const newsItem = document.createElement('div');
                     newsItem.className = 'news-item' + (index === 0 ? ' active' : '');
-                    newsItem.dataset.file = file.name;
+                    newsItem.dataset.file = file.filename;
 
                     const title = document.createElement('h3');
-                    title.textContent = file.title || file.name.replace('.md', '');
+                    title.textContent = file.title || file.filename.replace('.md', '');
 
                     const date = document.createElement('p');
                     date.textContent = new Date(file.date).toLocaleDateString();
@@ -212,13 +224,13 @@
                         // 添加active类
                         newsItem.classList.add('active');
                         // 加载新闻内容
-                        loadNewsContent(file.name);
+                        loadNewsContent(file.filename, file.title, file.date);
                     });
                 });
 
                 // 默认加载第一篇新闻
                 if (newsFiles.length > 0) {
-                    loadNewsContent(newsFiles[0].name);
+                    loadNewsContent(newsFiles[0].filename, newsFiles[0].title, newsFiles[0].date);
                 } else {
                     sidebar.innerHTML = '<div class="no-news">暂无新闻</div>';
                 }
@@ -228,42 +240,85 @@
             }
         }
 
+        // 简单的Markdown解析函数
+        function parseMarkdown(markdown) {
+            // 解析标题
+            markdown = markdown.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+            markdown = markdown.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+            markdown = markdown.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+
+            // 解析段落
+            markdown = markdown.replace(/^(?!<h|<ul|<ol|<li|<pre|<code)(.*$)/gm, '<p>$1</p>');
+
+            // 解析加粗
+            markdown = markdown.replace(/\*\*(.*)\*\*/gm, '<strong>$1</strong>');
+
+            // 解析斜体
+            markdown = markdown.replace(/\*(.*)\*/gm, '<em>$1</em>');
+
+            // 解析链接
+            markdown = markdown.replace(/\[(.*)\]\((.*)\)/gm, '<a href="$2">$1</a>');
+
+            return markdown;
+        }
+
         // 加载新闻内容
-        async function loadNewsContent(filename) {
+        async function loadNewsContent(filename, title, date) {
             const content = document.getElementById('news-content');
             content.innerHTML = '<div class="loading">加载中...</div>';
 
             try {
-                // 获取新闻文件内容
-                // 注意：由于浏览器安全限制，无法直接读取本地文件系统
-                // 这里我们假设有一个API来获取文件内容
-                // 实际应用中，您需要一个后端服务来提供这些数据
-                const response = await fetch(`api/news/${filename}`);
+                // 直接加载本地md文件
+                const response = await fetch(`news/${filename}`);
                 if (!response.ok) {
-                    throw new Error('网络响应异常');
+                    throw new Error('无法加载新闻文件');
                 }
-                const newsData = await response.json();
+                const markdownContent = await response.text();
+
+                // 解析Markdown为HTML
+                const htmlContent = parseMarkdown(markdownContent);
 
                 // 生成新闻内容
                 content.innerHTML = '';
 
-                const title = document.createElement('h2');
-                title.textContent = newsData.title || filename.replace('.md', '');
+                const newsTitle = document.createElement('h2');
+                newsTitle.textContent = title || filename.replace('.md', '');
 
                 const meta = document.createElement('div');
                 meta.className = 'news-meta';
-                meta.textContent = `发布日期: ${new Date(newsData.date).toLocaleDateString()}`;
+                meta.textContent = `发布日期: ${new Date(date).toLocaleDateString()}`;
 
                 const body = document.createElement('div');
                 body.className = 'news-body';
-                body.innerHTML = newsData.content;
+                body.innerHTML = htmlContent;
 
-                content.appendChild(title);
+                content.appendChild(newsTitle);
                 content.appendChild(meta);
                 content.appendChild(body);
             } catch (error) {
                 console.error('加载新闻内容失败:', error);
                 content.innerHTML = '<div class="no-news">加载失败</div>';
+
+                // 从侧边栏移除无效的新闻条目
+                const invalidItem = document.querySelector(`.news-item[data-file="${filename}"]`);
+                if (invalidItem) {
+                    const sidebar = document.getElementById('news-sidebar');
+                    sidebar.removeChild(invalidItem);
+
+                    // 如果还有其他新闻，加载第一个
+                    const remainingItems = document.querySelectorAll('.news-item');
+                    if (remainingItems.length > 0) {
+                        remainingItems[0].classList.add('active');
+                        const firstItem = remainingItems[0];
+                        loadNewsContent(
+                            firstItem.dataset.file,
+                            firstItem.querySelector('h3').textContent,
+                            firstItem.querySelector('p').textContent
+                        );
+                    } else {
+                        sidebar.innerHTML = '<div class="no-news">暂无新闻</div>';
+                    }
+                }
             }
         }
 
