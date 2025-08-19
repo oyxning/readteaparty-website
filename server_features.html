@@ -151,13 +151,11 @@
                     description.textContent = feature.description;
 
                     const link = document.createElement('a');
-                    link.href = '#';
+                    link.href = feature.url || '#';
                     link.className = 'feature-link';
                     link.textContent = '了解更多';
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        alert(`您点击了 ${feature.name} 的了解更多链接`);
-                    });
+                    link.target = '_blank'; // 在新窗口打开链接
+                    link.rel = 'noopener noreferrer'; // 安全属性
 
                     card.appendChild(icon);
                     card.appendChild(title);
