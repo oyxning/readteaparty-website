@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>红茶会MC服务器 - 联系我们</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="custom.css">
     <!-- 引入Font Awesome图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -20,9 +21,9 @@
                 <ul class="nav-links">
                     <li><a href="index.html">首页</a></li>
                     <li><a href="about.html">关于我们</a></li>
-                    <li><a href="features.html">服务器特色</a></li>
-                    <li><a href="rules.html">服务器规则</a></li>
-                    <li><a href="contact.html">联系我们</a></li>
+                    <li><a href="news.html">服务器新闻</a></li>
+                    <li><a href="server_features.html">功能列表</a></li>
+                    <li><a href="contact.html">加入我们</a></li>
                 </ul>
                 <div class="settings">
                     <button id="theme-toggle" class="theme-toggle-btn">
@@ -56,7 +57,7 @@
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-server"></i>
-                        <span data-i18n="server-version">服务器版本: 1.21.4</span>
+                        <span data-i18n="server-version">服务器版本: 1.21.7</span>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-dollar-sign"></i>
@@ -69,11 +70,23 @@
                         <a href="#"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
-                <div class="join-group-entry-right">
-                    <h3 data-i18n="join-group-title">进群方式</h3>
-                    <p data-i18n="join-group-desc">加入我们的QQ群，一起交流游戏经验</p>
-                    <a href="join-group.html" class="join-group-link btn" data-i18n="join-group-link">立即加入</a>
+                <div class="qr-code-container">
+                    <img src="img/qunqr.png" alt="QQ群二维码" class="qr-code-image">
                 </div>
+                <style>
+                    .qr-code-container {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100%;
+                    }
+                    .qr-code-image {
+                        max-width: 200px;
+                        height: auto;
+                        border: 5px solid #fff;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    }
+                </style>
             </div>
         </div>
     </section>
@@ -88,9 +101,9 @@
                 <ul class="footer-links">
                     <li><a href="index.html">首页</a></li>
                     <li><a href="about.html">关于我们</a></li>
-                    <li><a href="features.html">服务器特色</a></li>
-                    <li><a href="rules.html">服务器规则</a></li>
-                    <li><a href="contact.html">联系我们</a></li>
+                    <li><a href="news.html">服务器新闻</a></li>
+                    <li><a href="server_features.html">功能列表</a></li>
+                    <li><a href="contact.html">加入我们</a></li>
                 </ul>
                 <p class="copyright">© 2016 红茶会MC服务器. 保留所有权利.</p>
             </div>
